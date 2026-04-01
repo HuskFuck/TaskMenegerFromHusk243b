@@ -63,14 +63,12 @@ namespace WpfApp4
 
             IEnumerable<TaskItem> result = tasks;
 
-            // Поиск
             if (!string.IsNullOrWhiteSpace(SearchBox.Text))
             {
                 result = result.Where(t =>
                     t.Description.ToLower().Contains(SearchBox.Text.ToLower()));
             }
 
-            // Фильтр
             var filter = (FilterBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
             if (filter == "Активные")
@@ -79,7 +77,6 @@ namespace WpfApp4
             if (filter == "Выполненные")
                 result = result.Where(t => t.IsCompleted);
 
-            // Сортировка
             result = result.OrderBy(t => t.IsCompleted);
 
             TaskList.ItemsSource = result.ToList();
