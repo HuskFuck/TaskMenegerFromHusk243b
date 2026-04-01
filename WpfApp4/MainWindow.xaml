@@ -1,0 +1,89 @@
+﻿<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Task Manager" Height="500" Width="400">
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+
+            <TextBox x:Name="InputBox" Height="25" Margin="0,0,0,5"/>
+
+            <StackPanel Orientation="Horizontal">
+
+                <Button Content="Добавить" Width="80" Click="Add_Click"/>
+
+                <TextBox x:Name="SearchBox"
+                         Width="120"
+                         Margin="10,0"
+                         TextChanged="SearchChanged"/>
+
+                <ComboBox x:Name="FilterBox"
+                          Width="120"
+                          SelectionChanged="FilterChanged">
+                    <ComboBoxItem Content="Все" IsSelected="True"/>
+                    <ComboBoxItem Content="Активные"/>
+                    <ComboBoxItem Content="Выполненные"/>
+                </ComboBox>
+
+            </StackPanel>
+
+        </StackPanel>
+
+        <ListBox x:Name="TaskList" Grid.Row="1">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0"
+                                  IsChecked="{Binding IsCompleted}"
+                                  Checked="Update"
+                                  Unchecked="Update"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Description}"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Text="✕"
+                                   Cursor="Hand"
+                                   MouseLeftButtonUp="Delete_Click"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+
+        <TextBlock Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"
+                   x:Name="CounterText"/>
+
+    </Grid>
+</Window>
